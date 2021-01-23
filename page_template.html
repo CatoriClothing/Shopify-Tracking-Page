@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="">
+<div class="catship_tracking_content" style="max-width: 1200px; margin: 24px auto; padding: 0px 12px; width: 100%;">
+<div class="catship_tracking_form_div">
+<div class="catship_tracking_form_in">
+<div class="catship_tracking_form_order" style="width: 75%;"><form action="" method="get" class="catship_tracking_form">
+<div class="catship_tracking_parent">
+<div class="catship_tracking_span"><span>Order Number</span></div>
+<div class="catship_tracking_input">
+<span><input type="text" name="order" value="" required></span><span class="catship_tracking_alert" style="display: none;">Please enter your order number</span>
+</div>
+</div>
+<div class="catship_tracking_parent">
+<div class="catship_tracking_span"><span>Email</span></div>
+<div class="catship_tracking_input">
+<span><input type="text" name="email" value="" required></span><span class="catship_tracking_alert">Please enter your email</span>
+</div>
+</div>
+<div class="catship_tracking_button"><span> <button type="button" id="track" name="track" class="btn btn-primary mr-2 track">Track</button> </span></div>
+</form></div>
+</div>
+</div>
+</div>
+<div id="result" class="result"><br></div>
+<script>
+document.addEventListener('page:loaded', function() {
+	$(function(){
+  // intercept the form submission
+  $(document).on('click', '.track', function() {  
+  var $form = $(this).closest('form');
+	   // make an ajax POST request to the form's action
+	   $.ajax({
+          type: "POST",
+          url: 'https://endpointurl.com/',      // use the form's action attribute as the endpoint
+		  data: $form.serialize(),        // use the data from the form
+		  cache: false,
+		  success: function(html)
+    {
+    $("#result").html(html).show();
+        $('html, body').animate({
+            scrollTop: $("#result").offset().top
+        }, 500);   
+},
+      });
+  });
+})
+});
+
+$(document).ajaxStart(function() {
+  $("#loading").show();
+});
+
+$(document).ajaxStop(function() {
+  $("#loading").hide();
+  $("#st-tree-container").show();
+});
+
+$(window).load(function(e) {
+var distance = $('#result').offset().top
+$('html,body').animate({scrollTop:distance},1500);
+});</script>
