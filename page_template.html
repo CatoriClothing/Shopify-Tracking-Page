@@ -1,4 +1,49 @@
 <link rel="stylesheet" href="">
+<style>
+.track_left{
+    float: left;
+    width: 70%;
+    padding-right: 3%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    margin-bottom: 30px;
+    list-style: none;}
+
+.track_right{
+float: left;
+    width: 30%;
+}
+
+@media only screen and (max-width: 600px) {
+  .track_right {
+    width: 100% !important;
+  }
+  .track_left {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 810px) {
+  .catship_tracking_form_order {
+    width: 100% !important;
+  }
+}
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #ff0622; /* Blue */
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 <div class="catship_tracking_content" style="max-width: 1200px; margin: 24px auto; padding: 0px 12px; width: 100%;">
 <div class="catship_tracking_form_div">
 <div class="catship_tracking_form_in">
@@ -15,26 +60,58 @@
 <span><input type="text" name="email" value="" required></span><span class="catship_tracking_alert">Please enter your email</span>
 </div>
 </div>
-<div class="catship_tracking_button"><span> <button type="button" id="track" name="track" class="btn btn-primary mr-2 track">Track</button> </span></div>
+<div class="catship_tracking_button"><span> <button type="button" id="quote" name="quote" class="btn btn-primary mr-2 quote">Track</button> </span></div>
 </form></div>
 </div>
 </div>
+
+<div id="loading" class="loading" style="display: none;">
+<div class="loader"></div> <p>Finding Order .... </p>
 </div>
 <div id="result" class="result"><br></div>
 <script>
 document.addEventListener('page:loaded', function() {
+
+const urlParams = new URLSearchParams(window.location.search);
+const order = urlParams.get('order');
+const email = urlParams.get('email');
+
+if (order !== null && email !== null){
+   	   $.ajax({
+          type: "POST",
+          url: 'YOURURL?order='+ order +'&email='+ email +'',      // use the form's action attribute as the endpoint
+		  cache: false,
+		      beforeSend: function() {
+        $("#loading").show();
+    },
+		  success: function(html)
+    {
+	$("#loading").hide();
+    $("#result").html(html).show();
+        $('html, body').animate({
+            scrollTop: $("#result").offset().top
+        }, 500);   
+},
+      });
+
+}
+
 	$(function(){
   // intercept the form submission
-  $(document).on('click', '.track', function() {  
+  $(document).on('click', '.quote', function() {  
   var $form = $(this).closest('form');
 	   // make an ajax POST request to the form's action
 	   $.ajax({
           type: "POST",
-          url: 'https://endpointurl.com/',      // use the form's action attribute as the endpoint
+          url: 'YOURURL?order='+ order +'&email='+ email +'',      // use the form's action attribute as the endpoint
 		  data: $form.serialize(),        // use the data from the form
 		  cache: false,
+		      beforeSend: function() {
+        $("#loading").show();
+    },
 		  success: function(html)
     {
+	$("#loading").hide();
     $("#result").html(html).show();
         $('html, body').animate({
             scrollTop: $("#result").offset().top
@@ -45,16 +122,4 @@ document.addEventListener('page:loaded', function() {
 })
 });
 
-$(document).ajaxStart(function() {
-  $("#loading").show();
-});
-
-$(document).ajaxStop(function() {
-  $("#loading").hide();
-  $("#st-tree-container").show();
-});
-
-$(window).load(function(e) {
-var distance = $('#result').offset().top
-$('html,body').animate({scrollTop:distance},1500);
-});</script>
+</script>
