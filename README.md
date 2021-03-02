@@ -2,8 +2,7 @@
 Basic functionality shouldn't cost money. 
 
 ## About
-Track USPS packages and show estimated delivery dates, latest scan events, package class and any other data that USPS provides via their API.
-Can be worked to use any shipping carriers API. Swiss Post and Asendia have strict limitations and don't provide a public API.
+Track over 100+ carriers using EasyPost as well as direct DHL API integration for packages and show estimated delivery dates, latest scan events, package class and any other data that DHL or EasyPost provides via their API.
 
 ## Overview
 - Create a new page using the page template and style it as required. 
@@ -11,7 +10,5 @@ Can be worked to use any shipping carriers API. Swiss Post and Asendia have stri
 - Point ajax request to script and away you go.
 
 ## LIMITATIONS
-- Only USPS is supported. If the tracking number is a DHL or Globgistcs tracking number it will provide the approriate links to redirect the customer.
-- No historical data or tracking. Only current status, estimated delivery date and 1 previous scan event will show. 
-- Rate Limiting only functions for direct access not ajax requests. You will need to add your own rate limiting implementation
+- No estimated delivery date support unless it's a USPS number. 
 
