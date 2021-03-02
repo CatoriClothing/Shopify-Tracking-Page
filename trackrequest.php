@@ -1,4 +1,5 @@
 <?php
+header('Access-Control-Allow-Credentials: true'); // Pass through to allow for basic rate limiting
 date_default_timezone_set('America/Los_Angeles');
 
 function generateRandomString($length = 3) {
@@ -10,17 +11,19 @@ function generateRandomString($length = 3) {
     }
     return $randomString;
 }
-$dhlrand = generateRandomString(); 
 
-// Randomly Cycle DHL API Keys to avoid hitting daily rate limits
-if($dhlrand >= 0  && $dhlrand <= 399 ) {
+$dhlrand = generateRandomString();  // Cycle DHL keys to avoid hitting rate limit. Probably better to switch once hitting the rate limit instead of casting all of them
+if($dhlrand >= 0  && $dhlrand <= 299 ) {
 $dhlapi = ''; // Prod 1
 }
-elseif ($dhlrand >= 400  && $dhlrand <= 795) {
+elseif ($dhlrand >= 300  && $dhlrand <= 599) {
 	$dhlapi = ''; // Prod 2
 }
+elseif ($dhlrand >= 600  && $dhlrand <= 899) {
+	$dhlapi = ''; // Prod 3
+}
 else {
-	$dhlapi = '';  // Prod 3
+	$dhlapi = '';  // Prod 4	
 }
 
 // Credit to Tomoli75 for the session rate limiting https://gist.github.com/Tomoli75/394a47e391b966f5061dfa37b8633e44
@@ -105,7 +108,7 @@ if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
   }
 
 
-$limit = 3;				//	number of connections to limit user to per $minutes
+$limit = 5;				//	number of connections to limit user to per $minutes
 $minutes = 1;				//	number of $minutes to check for.
 $seconds = floor($minutes * 60);	//	retry after $minutes in seconds.
 
