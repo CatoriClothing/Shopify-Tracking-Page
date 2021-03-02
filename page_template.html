@@ -79,6 +79,9 @@ const email = urlParams.get('email');
 if (order !== null && email !== null){
    	   $.ajax({
           type: "POST",
+		      xhrFields: {
+         withCredentials: true
+    }, // Passthrough to allow basic rate limiting
           url: 'YOURURL?order='+ order +'&email='+ email +'',      // use the form's action attribute as the endpoint
 		  cache: false,
 		      beforeSend: function() {
@@ -103,6 +106,9 @@ if (order !== null && email !== null){
 	   // make an ajax POST request to the form's action
 	   $.ajax({
           type: "POST",
+		      xhrFields: {
+         withCredentials: true
+    }, // Passthrough to allow basic rate limiting
           url: 'YOURURL?order='+ order +'&email='+ email +'',      // use the form's action attribute as the endpoint
 		  data: $form.serialize(),        // use the data from the form
 		  cache: false,
